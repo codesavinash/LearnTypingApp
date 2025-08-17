@@ -1,0 +1,50 @@
+{
+  "lesson1": {
+    "title": "Home Row",
+    "content": "asdf jkl; asdf jkl; asdf jkl; jkl; asdf"
+  },
+  "lesson2": {
+    "title": "Top Row",
+    "content": "qwer uiop qwer uiop qwer uiop"
+  },
+  "lesson3": {
+    "title": "Bottom Row",
+    "content": "zxcv nm, zxcv nm, zxcv nm,"
+  },
+  "lesson4": {
+    "title": "Numbers",
+    "content": "123 456 7890 123 456 7890"
+  },
+  "lesson5": {
+    "title": "Simple Words",
+    "content": "cat dog bird fish apple orange banana"
+  },
+  "lesson6": {
+    "title": "Common Words",
+    "content": "the and is in you that it he was for on are"
+  },
+  "lesson7": {
+    "title": "Pangram Practice",
+    "content": "The quick brown fox jumps over the lazy dog"
+  },
+  "lesson8": {
+    "title": "Short Sentences",
+    "content": "I like to read books. She goes to school. We play games."
+  },
+  "lesson9": {
+    "title": "Intermediate Sentences",
+    "content": "Typing fast requires practice every single day. Accuracy is more important than speed."
+  },
+  "lesson10": {
+    "title": "Advanced Words",
+    "content": "extraordinary punctuation immediately questionnaire knowledge hypothesis"
+  },
+  "lesson11": {
+    "title": "Quotes",
+    "content": "\"Do not wait to strike till the iron is hot; but make it hot by striking.\" - William Butler Yeats"
+  },
+  "lesson12": {
+    "title": "Programming Keywords",
+    "content": "public static void class int double boolean if else for while return"
+  }
+}
