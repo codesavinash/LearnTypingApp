@@ -1,130 +1,52 @@
-📚 LearnTypingApp
+# Typing Practice Java Application
 
-LearnTypingApp is a Java desktop typing tutor that helps users improve typing speed, accuracy, and confidence.
-It includes lessons, practice mode, progress tracking, and optional gamification features.
+## Overview
 
-⸻
+This application is a desktop Java Swing program designed to help users improve their typing speed and accuracy through interactive lessons. The app provides real-time feedback, tracks progress, and unlocks new lessons as you improve.
 
-✨ Features
+---
 
-Core Features
-	•	📝 Typing Lessons: Beginner-friendly structured lessons (home row, top row, bottom row, numbers, symbols)
-	•	🎯 Practice Mode: Free typing practice using random words, custom text, or imported articles
-	•	⏱ Speed & Accuracy Tracking: Real-time Words Per Minute (WPM) and error count
-	•	📊 Progress Charts: Track improvement over time
+## How to Run the Application
 
-Enhancement Features
-	•	🏆 Gamification: Unlock achievements or levels
-	•	🎮 Mini-Games: Typing challenges, time attacks, or quote competitions
-	•	✍️ Custom Lessons: Users can create their own practice sets
-	•	🚨 Mistake Highlighting: Highlight errors in real-time
-	•	🎹 Virtual Keyboard Display: Shows which finger to use for each key
-	•	📅 Daily Goals & Reminders: Set goals and receive pop-ups
+### Prerequisites
 
- 📂 Project Structure
+- **Java Development Kit (JDK) 8 or higher** installed on your machine  
+- Optionally, an IDE like **Visual Studio Code** with Java extensions for easier setup and running
 
- LearnTypingApp/
-│
-├── Main.java                 // Entry point
-├── TypingLesson.java         // Represents a typing lesson
-├── LessonManager.java        // Manages lessons and user progress
-├── TypingPracticePanel.java  // UI panel for typing practice
-├── StatsTracker.java         // Tracks speed, accuracy, and progress
-├── NotificationManager.java  // Handles popup reminders (optional)
-├── Utils.java                // Helper methods
-│
-├── data/
-│   └── lessons.json          // Lessons content in JSON format
-│
-└── resources/
-    └── fonts/, images/       // Custom fonts or UI assets
+---
 
- ⚙️ Installation
+### Running Using Visual Studio Code
 
-Prerequisites
-	•	Install Java JDK 17+
-	•	Install Git
-	•	(Optional) Install VS Code
+1. **Install JDK:**  
+   Download and install the JDK from [Oracle](https://www.oracle.com/java/technologies/downloads/) or an OpenJDK distribution.
 
-⸻
+2. **Install VS Code:**  
+   Download from [Visual Studio Code](https://code.visualstudio.com/).
 
-Steps to Run Locally
+3. **Install Java Extension Pack in VS Code:**  
+   - Open VS Code  
+   - Go to Extensions panel (`Ctrl+Shift+X`)  
+   - Search for and install **Extension Pack for Java** by Microsoft
 
-1.	Clone the repository
-
-git clone https://github.com/your-username/LearnTypingApp.git
+4. **Clone the Project Repository:**  
+   Open a terminal or command prompt and run:
+   
+git clone https://github.com/codesavinash/LearnTypingApp.git
 cd LearnTypingApp
 
-2.	Compile all Java files
 
-	javac *.java
+5. **Open the Project Folder in VS Code:**  
+- Click `File > Open Folder...`  
+- Select the cloned `LearnTypingApp` folder  
 
-3.	Run the app
+6. **Run the Application:**
+- Open `Main.java` in VS Code  
+- Click the green **Run** button above the `main` method, or right-click and select **Run Java**  
+- The application window will open for you to start practicing.
 
-	java Main
+7. **Using Terminal (Optional):**
+Alternatively, from the terminal in the project folder, compile and run:
 
-4.	Optional: Create a JAR file
+javac *.java
+java Main
 
-	jar cfe LearnTypingApp.jar Main *.class
-	java -jar LearnTypingApp.jar
-
-🎮 Usage Guide
-	1.	Launch the app.
-	2.	Choose between:
-	•	Lessons Mode → Structured lessons
-	•	Practice Mode → Free typing with random words, custom text, or imported files
-	3.	Type the displayed text in the input box.
-	4.	Review your speed, accuracy, and error count after completing the session.
-	5.	Progress is automatically saved for future sessions.
-
- 🎓 Lessons
-	•	Lessons are stored in data/lessons.json.
-	•	Example format:
- {
-  "lesson1": {
-    "title": "Home Row",
-    "content": "asdf jkl;"
-  },
-  "lesson2": {
-    "title": "Top Row",
-    "content": "qwer uiop"
-  }
-}
-
-	•	You can add custom lessons by editing lessons.json.
-
- 📊 Stats & Progress
-	•	WPM (Words Per Minute) → Typing speed
-	•	Accuracy (%) → Correct characters / total characters
-	•	Error Count → Mistyped keys
-	•	Progress Charts → Visual graphs saved locally
-
-Stats are saved automatically in data/stats.json.
-
-⸻
-
-❓ FAQ
-
-Q: Can I run this without VS Code?
-A: Yes, just compile with javac *.java and run with java Main.
-
-Q: Can I import my own text for practice?
-A: Yes! Paste text into Practice Mode or add it as a lesson in lessons.json.
-
-Q: Where are my progress stats saved?
-A: In data/stats.json.
-
-⸻
-
-🤝 Contributing
-	1.	Fork the repository
-	2.	Create a branch:
- git checkout -b feature/new-feature
-
- 	3.	Commit your changes:
-
-  git commit -m "Added new feature"
-
-  4.	Push and create a pull request
-
-     📸 Screenshots
