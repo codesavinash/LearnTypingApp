@@ -11,7 +11,7 @@ public class TypingPracticePanel extends JPanel {
     private JTextPane lessonTextPane;
     private JTextArea typingArea;
     private JLabel wpmLabel, accuracyLabel, errorsLabel, goalLabel;
-    private JButton prevButton, nextButton, highScoreButton, dailyProgressButton;
+    private JButton prevButton, nextButton, resetButton, highScoreButton, dailyProgressButton;
     private JComboBox<String> lessonSelector;
     private LessonManager lessonManager;
     private TypingLesson currentLesson;
@@ -22,7 +22,6 @@ public class TypingPracticePanel extends JPanel {
     private JComboBox<String> goalSelector;
     private JProgressBar goalProgressBar;
     private int dailyGoalMinutes = 15;
-    private int dailyPracticedSeconds = 0;
 
     private JComboBox<String> themeSelector;
     private Color bgColor, panelColor, buttonColor, buttonHover, textCorrect, textError, textDark;
@@ -59,8 +58,10 @@ public class TypingPracticePanel extends JPanel {
 
         prevButton = createStyledButton("Prev");
         nextButton = createStyledButton("Next");
+        resetButton = createStyledButton("Reset");
         topPanel.add(prevButton);
         topPanel.add(nextButton);
+        topPanel.add(resetButton);
 
         themeSelector = new JComboBox<>(new String[]{"Light", "Dark"});
         topPanel.add(themeSelector);
@@ -128,6 +129,7 @@ public class TypingPracticePanel extends JPanel {
         loadLesson(currentLessonIndex);
 
         addListeners();
+        updateTheme();
     }
 
     private void addListeners() {
@@ -157,6 +159,8 @@ public class TypingPracticePanel extends JPanel {
                 loadLesson(currentLessonIndex);
             }
         });
+
+        resetButton.addActionListener(e -> loadLesson(currentLessonIndex));
 
         typingArea.addKeyListener(new KeyAdapter() {
             @Override
@@ -209,10 +213,48 @@ public class TypingPracticePanel extends JPanel {
     }
 
     private void updateTypingFeedback() {
-        if (currentLesson == null || lessonLines == null || currentLineIndex >= lessonLines.size())
+        if (!typingArea.isEditable()) {
+            return;
+        }
+
+        if (currentLesson == null || lessonLines == null || currentLineIndex > lessonLines.size())
             return;
 
         String typed = typingArea.getText();
+
+        // Check if errors exceed the limit
+        if (totalErrors >= 100) {
+            JOptionPane.showMessageDialog(this,
+                    "You have reached 100 errors. Please retry the lesson.",
+                    "Too Many Errors", JOptionPane.WARNING_MESSAGE);
+            loadLesson(currentLessonIndex);
+            return;
+        }
+
+        if (currentLineIndex == lessonLines.size()) {
+            // Full lesson done, check accuracy
+            double accuracy = StatsTracker.calculateAccuracy(
+                    typedSoFar.toString(),
+                    totalErrors,
+                    currentLesson.getContent().length()
+            );
+            if (accuracy == 100D) {
+                typingArea.setEditable(false);
+                unlockNextLesson();
+                JOptionPane.showMessageDialog(this,
+                        "Congratulations! You have completed " + currentLesson.getTitle() +
+                                " with 100% accuracy. The next lesson is now unlocked.",
+                        "Lesson Completed", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "You finished " + currentLesson.getTitle() +
+                                " with some errors. Please try again to unlock the next lesson.",
+                        "Try Again", JOptionPane.WARNING_MESSAGE);
+                loadLesson(currentLessonIndex);
+            }
+            return;
+        }
+
         String currentLine = lessonLines.get(currentLineIndex);
 
         StyledDocument doc = lessonTextPane.getStyledDocument();
@@ -243,19 +285,13 @@ public class TypingPracticePanel extends JPanel {
             }
         }
 
-        totalErrors = lineErrors + typedSoFar.toString().replaceAll("[^\\w]", "").length()
-                - typedSoFar.toString().replaceAll("\\w", "").length();
+        totalErrors = lineErrors;
 
         if (typed.equals(currentLine)) {
             typedSoFar.append(currentLine).append("\n");
             currentLineIndex++;
-            if (currentLineIndex < lessonLines.size()) {
-                updateLessonTextPane();
-                typingArea.setText("");
-            } else {
-                typingArea.setEditable(false);
-                unlockNextLesson();
-            }
+            typingArea.setText("");
+            updateLessonTextPane();
         }
 
         updateStats();
@@ -268,14 +304,17 @@ public class TypingPracticePanel extends JPanel {
             TypingLesson nextLesson = lessons.get(nextIndex);
             if (!nextLesson.isUnlocked()) {
                 nextLesson.setUnlocked(true);
+                lessonSelector.removeItemAt(nextIndex);
                 lessonSelector.insertItemAt(nextLesson.getTitle(), nextIndex);
             }
         }
+        saveHighScores();
     }
 
     private void updateStats() {
         long elapsedMillis = System.currentTimeMillis() - startTime;
         String typedText = typedSoFar.toString() + typingArea.getText();
+
         int wpm = StatsTracker.calculateWPM(typedText, elapsedMillis);
         int accuracy = StatsTracker.calculateAccuracy(typedText, totalErrors, currentLesson.getContent().length());
 
@@ -283,19 +322,13 @@ public class TypingPracticePanel extends JPanel {
         accuracyLabel.setText("Accuracy: " + Math.max(0, Math.min(100, accuracy)) + "%");
         errorsLabel.setText("Errors: " + totalErrors);
 
-        dailyPracticedSeconds++;
-        goalProgressBar.setValue(Math.min(dailyPracticedSeconds, dailyGoalMinutes * 60));
+        int elapsedSeconds = (int) (elapsedMillis / 1000);
+        goalProgressBar.setValue(Math.min(elapsedSeconds, dailyGoalMinutes * 60));
         goalProgressBar.setString((goalProgressBar.getValue() / 60) + " / " + dailyGoalMinutes + " min");
 
-        if (!highScores.containsKey(currentLesson.getTitle()) || wpm > highScores.get(currentLesson.getTitle())) {
-            highScores.put(currentLesson.getTitle(), wpm);
-            saveHighScores();
-        }
-
-        statsTracker.recordSession(currentLesson.getTitle(), wpm, totalErrors, 1);
+        statsTracker.recordSession(currentLesson.getTitle(), wpm, totalErrors, elapsedSeconds);
     }
 
-    // ========== BUTTON & THEME STYLING ==========
     private JButton createStyledButton(String text) {
         JButton button = new JButton(text);
         button.setFocusPainted(false);
@@ -352,10 +385,12 @@ public class TypingPracticePanel extends JPanel {
         typingArea.setForeground(textDark);
         prevButton.setBackground(buttonColor);
         nextButton.setBackground(buttonColor);
+        resetButton.setBackground(buttonColor);
         highScoreButton.setBackground(buttonColor);
         dailyProgressButton.setBackground(buttonColor);
         prevButton.setForeground(Color.WHITE);
         nextButton.setForeground(Color.WHITE);
+        resetButton.setForeground(Color.WHITE);
         highScoreButton.setForeground(Color.WHITE);
         dailyProgressButton.setForeground(Color.WHITE);
         repaint();
@@ -366,7 +401,10 @@ public class TypingPracticePanel extends JPanel {
         for (Map.Entry<String, Integer> entry : highScores.entrySet()) {
             sb.append(entry.getKey()).append(": ").append(entry.getValue()).append(" WPM\n");
         }
-        JOptionPane.showMessageDialog(this, sb.length() > 0 ? sb.toString() : "No high scores yet!", "High Scores", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this,
+                sb.length() > 0 ? sb.toString() : "No high scores yet!",
+                "High Scores",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void showDailyProgress() {
@@ -398,4 +436,4 @@ public class TypingPracticePanel extends JPanel {
             }
         } catch (IOException e) { e.printStackTrace(); }
     }
-} 
+}
