@@ -1,78 +1,130 @@
 📚 LearnTypingApp
 
-A Java-based Typing Tutor to help users improve typing speed, accuracy, and confidence. Built with Java Swing for a simple desktop experience.
+LearnTypingApp is a Java desktop typing tutor that helps users improve typing speed, accuracy, and confidence.
+It includes lessons, practice mode, progress tracking, and optional gamification features.
 
 ⸻
 
 ✨ Features
 
 Core Features
-	•	📝 Typing Lessons: Structured lessons (home row, top row, bottom row, numbers, symbols).
-	•	🎯 Practice Mode: Free typing practice using random words, custom text, or imported articles.
-	•	⏱ Speed & Accuracy Tracking: Real-time WPM (Words Per Minute) and error count display after each session.
-	•	📊 Progress Charts: Visual analytics of improvement over time.
+	•	📝 Typing Lessons: Beginner-friendly structured lessons (home row, top row, bottom row, numbers, symbols)
+	•	🎯 Practice Mode: Free typing practice using random words, custom text, or imported articles
+	•	⏱ Speed & Accuracy Tracking: Real-time Words Per Minute (WPM) and error count
+	•	📊 Progress Charts: Track improvement over time
 
 Enhancement Features
-	•	🏆 Gamification: Unlock achievements as you improve.
-	•	🎮 Mini-Games: Typing challenges and time attacks for motivation.
-	•	✍️ Custom Lessons: Create your own practice sets (coding keywords, tricky words).
-	•	🚨 Mistake Highlighting: Instantly highlight errors while typing.
-	•	🎹 Virtual Keyboard: Shows which finger to use for each key.
-	•	📅 Daily Goals & Reminders: Set practice goals and get reminders.
- 
- 🗂 Project Structure
+	•	🏆 Gamification: Unlock achievements or levels
+	•	🎮 Mini-Games: Typing challenges, time attacks, or quote competitions
+	•	✍️ Custom Lessons: Users can create their own practice sets
+	•	🚨 Mistake Highlighting: Highlight errors in real-time
+	•	🎹 Virtual Keyboard Display: Shows which finger to use for each key
+	•	📅 Daily Goals & Reminders: Set goals and receive pop-ups
+
+ 📂 Project Structure
 
  LearnTypingApp/
 │
-├── src/
-│   ├── Main.java                 // Entry point
-│   ├── TypingLesson.java         // Represents a typing lesson
-│   ├── LessonManager.java        // Manages lessons and user progress
-│   ├── TypingPracticePanel.java  // UI panel for typing practice
-│   ├── StatsTracker.java         // Tracks speed, accuracy, and progress
-│   ├── NotificationManager.java  // Handles popup reminders
-│   └── Utils.java                // Helper methods
+├── Main.java                 // Entry point
+├── TypingLesson.java         // Represents a typing lesson
+├── LessonManager.java        // Manages lessons and user progress
+├── TypingPracticePanel.java  // UI panel for typing practice
+├── StatsTracker.java         // Tracks speed, accuracy, and progress
+├── NotificationManager.java  // Handles popup reminders (optional)
+├── Utils.java                // Helper methods
 │
 ├── data/
-│   └── lessons.json              // Lessons content in JSON format
+│   └── lessons.json          // Lessons content in JSON format
 │
 └── resources/
-    └── fonts/, images/           // Custom fonts or UI assets
+    └── fonts/, images/       // Custom fonts or UI assets
 
-    ⚙️ Installation
+ ⚙️ Installation
 
 Prerequisites
 	•	Install Java JDK 17+
 	•	Install Git
-	•	(Optional) Install VS Code with Java Extension Pack
+	•	(Optional) Install VS Code
 
 ⸻
 
 Steps to Run Locally
-	1.	Clone the repository
 
- git clone https://github.com/your-username/LearnTypingApp.git
+1.	Clone the repository
+
+git clone https://github.com/your-username/LearnTypingApp.git
 cd LearnTypingApp
 
-javac -d bin src/*.java
+2.	Compile all Java files
 
-java -cp bin Main
+	javac *.java
 
-Run with VS Code
-	1.	Open the LearnTypingApp folder in VS Code.
-	2.	Make sure the Java Extension Pack is installed.
-	3.	Open Main.java → click the green Run ▶️ button.
+3.	Run the app
 
- 📌 Roadmap
-	•	Add more lessons (numbers, symbols)
-	•	Implement gamification (levels & badges)
-	•	Add mistake highlighting in real-time
-	•	Build progress charts with JFreeChart or JavaFX
+	java Main
 
- 🤝 Contributing
+4.	Optional: Create a JAR file
 
-Contributions are welcome! Fork the repo, create a branch, and submit a pull request.
+	jar cfe LearnTypingApp.jar Main *.class
+	java -jar LearnTypingApp.jar
 
-📜 License
+🎮 Usage Guide
+	1.	Launch the app.
+	2.	Choose between:
+	•	Lessons Mode → Structured lessons
+	•	Practice Mode → Free typing with random words, custom text, or imported files
+	3.	Type the displayed text in the input box.
+	4.	Review your speed, accuracy, and error count after completing the session.
+	5.	Progress is automatically saved for future sessions.
 
-This project is licensed under the MIT License – feel free to use and modify.
+ 🎓 Lessons
+	•	Lessons are stored in data/lessons.json.
+	•	Example format:
+ {
+  "lesson1": {
+    "title": "Home Row",
+    "content": "asdf jkl;"
+  },
+  "lesson2": {
+    "title": "Top Row",
+    "content": "qwer uiop"
+  }
+}
+
+	•	You can add custom lessons by editing lessons.json.
+
+ 📊 Stats & Progress
+	•	WPM (Words Per Minute) → Typing speed
+	•	Accuracy (%) → Correct characters / total characters
+	•	Error Count → Mistyped keys
+	•	Progress Charts → Visual graphs saved locally
+
+Stats are saved automatically in data/stats.json.
+
+⸻
+
+❓ FAQ
+
+Q: Can I run this without VS Code?
+A: Yes, just compile with javac *.java and run with java Main.
+
+Q: Can I import my own text for practice?
+A: Yes! Paste text into Practice Mode or add it as a lesson in lessons.json.
+
+Q: Where are my progress stats saved?
+A: In data/stats.json.
+
+⸻
+
+🤝 Contributing
+	1.	Fork the repository
+	2.	Create a branch:
+ git checkout -b feature/new-feature
+
+ 	3.	Commit your changes:
+
+  git commit -m "Added new feature"
+
+  4.	Push and create a pull request
+
+     📸 Screenshots
