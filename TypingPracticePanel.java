@@ -11,6 +11,7 @@ public class TypingPracticePanel extends JPanel {
     private JTextPane lessonTextPane;
     private JTextArea typingArea;
     private JLabel wpmLabel, accuracyLabel, errorsLabel, goalLabel;
+    private JLabel lineProgressLabel;
     private JButton prevButton, nextButton, resetButton, highScoreButton, dailyProgressButton;
     private JComboBox<String> lessonSelector;
     private LessonManager lessonManager;
@@ -67,9 +68,9 @@ public class TypingPracticePanel extends JPanel {
         topPanel.add(themeSelector);
         add(topPanel, BorderLayout.NORTH);
 
-        // Center panel
-        JPanel centerPanel = new JPanel(new GridLayout(1, 2, 10, 10));
-        centerPanel.setBackground(bgColor);
+        // Center panel with lesson pane and progress label
+        JPanel lessonPanel = new JPanel(new BorderLayout());
+        lessonPanel.setBackground(panelColor);
 
         lessonTextPane = new JTextPane();
         lessonTextPane.setEditable(false);
@@ -77,7 +78,17 @@ public class TypingPracticePanel extends JPanel {
         lessonTextPane.setBackground(panelColor);
         lessonTextPane.setForeground(textDark);
         lessonTextPane.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true));
-        centerPanel.add(new JScrollPane(lessonTextPane));
+        lessonPanel.add(new JScrollPane(lessonTextPane), BorderLayout.CENTER);
+
+        lineProgressLabel = new JLabel("Line 1 of 1");
+        lineProgressLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        lineProgressLabel.setForeground(textDark);
+        lineProgressLabel.setBorder(new EmptyBorder(4, 4, 4, 4));
+        lessonPanel.add(lineProgressLabel, BorderLayout.SOUTH);
+
+        JPanel centerPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+        centerPanel.setBackground(bgColor);
+        centerPanel.add(lessonPanel);
 
         typingArea = new JTextArea();
         typingArea.setLineWrap(true);
@@ -129,6 +140,7 @@ public class TypingPracticePanel extends JPanel {
         loadLesson(currentLessonIndex);
 
         addListeners();
+        addKeyboardShortcuts();
         updateTheme();
     }
 
@@ -184,6 +196,35 @@ public class TypingPracticePanel extends JPanel {
         dailyProgressButton.addActionListener(e -> showDailyProgress());
     }
 
+    private void addKeyboardShortcuts() {
+        InputMap im = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = this.getActionMap();
+
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK), "nextLesson");
+        am.put("nextLesson", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nextButton.doClick();
+            }
+        });
+
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_DOWN_MASK), "prevLesson");
+        am.put("prevLesson", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                prevButton.doClick();
+            }
+        });
+
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK), "resetLesson");
+        am.put("resetLesson", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetButton.doClick();
+            }
+        });
+    }
+
     // ========== CORE METHODS ==========
     private void loadLesson(int index) {
         java.util.List<TypingLesson> lessons = lessonManager.getLessons();
@@ -210,6 +251,8 @@ public class TypingPracticePanel extends JPanel {
         if (currentLineIndex < lessonLines.size())
             sb.append(lessonLines.get(currentLineIndex));
         lessonTextPane.setText(sb.toString());
+
+        lineProgressLabel.setText("Line " + Math.min(currentLineIndex + 1, lessonLines.size()) + " of " + lessonLines.size());
     }
 
     private void updateTypingFeedback() {
@@ -283,6 +326,14 @@ public class TypingPracticePanel extends JPanel {
                 doc.setCharacterAttributes(offset + i, 1, wrongAttr, false);
                 lineErrors++;
             }
+        }
+
+        // Highlight next char to type, if any
+        if (typed.length() < currentLine.length()) {
+            int nextCharPos = offset + typed.length();
+            SimpleAttributeSet nextCharAttr = new SimpleAttributeSet();
+            StyleConstants.setBackground(nextCharAttr, new Color(0xFFFF99)); // subtle yellow
+            doc.setCharacterAttributes(nextCharPos, 1, nextCharAttr, false);
         }
 
         totalErrors = lineErrors;
