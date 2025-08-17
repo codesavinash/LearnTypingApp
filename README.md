@@ -31,9 +31,9 @@ This application is a desktop Java Swing program designed to help users improve 
 4. **Clone the Project Repository:**  
    Open a terminal or command prompt and run:
    
-git clone https://github.com/codesavinash/LearnTypingApp.git
+   git clone https://github.com/codesavinash/LearnTypingApp.git
 
- cd LearnTypingApp
+   cd LearnTypingApp
 
 
 5. **Open the Project Folder in VS Code:**  
@@ -45,12 +45,12 @@ git clone https://github.com/codesavinash/LearnTypingApp.git
 - Click the green **Run** button above the `main` method, or right-click and select **Run Java**  
 - The application window will open for you to start practicing.
 
-7. **Using Terminal (Optional):**
+## 7. **Using Terminal (Optional):**
 Alternatively, from the terminal in the project folder, compile and run:
 
-### javac *.java
+ javac *.java
 
-### java Main
+ java Main
 
 
 ---
