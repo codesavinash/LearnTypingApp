@@ -55,6 +55,11 @@ Alternatively, from the terminal in the project folder, compile and run:
 
 ---
 
+## Screen shot
+<img width="1005" height="605" alt="Screenshot 2025-08-17 at 3 19 55 PM" src="https://github.com/user-attachments/assets/25192a91-b2fb-42cd-873e-2fb09447a701" />
+
+
+
 ## Usage Highlights
 
 - Select lessons in the dropdown; locked lessons show a lock icon.  
